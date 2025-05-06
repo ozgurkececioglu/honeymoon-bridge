@@ -1,5 +1,6 @@
-import { UpCard } from "@/models/Card";
+import { Ranks, Suits } from "@/models/Card";
 import { PlayableCard } from "@/models/PlayableCard";
+import { UpCardModel } from "@/schemas/CardSchema";
 import { v4 as uuid } from "uuid";
 
 export class DeckService {
@@ -15,31 +16,10 @@ export class DeckService {
   }
 
   private generateRandomizedDeckOfCards(): PlayableCard[] {
-    const suits: Array<UpCard["suit"]> = [
-      "hearts",
-      "diamonds",
-      "clubs",
-      "spades",
-    ];
-    const values: Array<UpCard["rank"]> = [
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "J",
-      "Q",
-      "K",
-      "A",
-    ];
     const deck: PlayableCard[] = [];
 
-    for (const suit of suits) {
-      for (const value of values) {
+    for (const suit of Suits) {
+      for (const value of Ranks) {
         deck.push({
           id: uuid(),
           rank: value,

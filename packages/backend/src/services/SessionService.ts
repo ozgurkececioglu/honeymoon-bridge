@@ -13,8 +13,8 @@ export class SessionService {
     const sessionId = uuid();
     this.sessions.set(sessionId, {
       id: sessionId,
-      userId: email, // Replace with actual user ID
-      username: "username", // Replace with actual username
+      userId: sessionId,
+      username: email,
       createdAt: new Date(),
       expiresAt: new Date(Date.now() + 60 * 60 * 1000), // 1 hour expiration
     });

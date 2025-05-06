@@ -1,11 +1,6 @@
-import type { GameState } from "@/models/GameState";
-import type { Player } from "@/models/Player";
+import { GameState } from "@/models/GameState";
+import { GameInfoModel } from "@/schemas/GameInfoSchema";
 
-export interface GameModel {
-  id: string;
-  players: Player[];
-  name: string; // Name of the game
-  status: "waiting" | "active" | "completed";
-  createdBy: string; // User ID of the creator
-  createdAt: Date;
+export interface GameModel extends GameInfoModel {
+  state?: GameState;
 }

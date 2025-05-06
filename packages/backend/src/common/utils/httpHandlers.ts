@@ -1,10 +1,8 @@
+import { ServiceResponse } from "@/common/models/ServiceResponse";
+import { sessionService } from "@/services/SessionService";
 import type { NextFunction, Request, RequestHandler, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import type { ZodError, ZodSchema } from "zod";
-
-import { ServiceResponse } from "@/common/models/ServiceResponse";
-import { sessionService } from "@/services/SessionService";
-import { logger } from "@/server";
 
 export const validateRequest =
   (schema: ZodSchema) =>

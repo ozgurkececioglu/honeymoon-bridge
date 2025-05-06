@@ -1,5 +1,5 @@
 import { ServiceResponse } from "@/common/models/ServiceResponse";
-import type { GameModel } from "@/models/GameModel";
+import { GameModel } from "@/models/GameModel";
 import { logger } from "@/server";
 import { sessionService } from "@/services/SessionService";
 import { StatusCodes } from "http-status-codes";
@@ -76,6 +76,8 @@ export class GamesService {
 
     // Add player to the game if not already there
     if (!game.players.some((p) => p.id === session.userId)) {
+      logger.info(`Player ${session.username} joined game ${gameId}`);
+
       game.players.push({
         id: session.userId,
         username: session.username,

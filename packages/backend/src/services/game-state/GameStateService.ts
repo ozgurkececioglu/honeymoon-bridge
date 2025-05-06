@@ -1,4 +1,5 @@
-import type { Suit, UpCard } from "@/models/Card";
+import type { Suit } from "@/models/Card";
+import { UpCardModel } from "@/schemas/CardSchema";
 import { deckService } from "@/services/game-state/DeckService";
 import { roundService } from "@/services/game-state/RoundService";
 import { trickService } from "@/services/game-state/TrickService";
@@ -44,7 +45,7 @@ export class GameStateService {
     return this.trumpSuit;
   }
 
-  setTrumpSuit(trump: Suit) {
+  setTrumpSuit(trump: Suit | "none") {
     if (this.trumpSuit !== null) {
       return false;
     }
@@ -72,7 +73,7 @@ export class GameStateService {
     trickService.resetTricks();
   }
 
-  playCard(card: UpCard, playerIndex: number) {
+  playCard(card: UpCardModel, playerIndex: number) {
     const { card: playableCard } = deckService.getCardById(card.id);
 
     if (!playableCard) {
@@ -96,7 +97,6 @@ export class GameStateService {
       // Check if the round is over
       if (trickService.areTricksComplete()) {
         const { score, winnerIndex } = roundService.getRoundResult(
-          trickService,
           this.trumpSuit
         );
         const currentRound = roundService.getCurrentRound();

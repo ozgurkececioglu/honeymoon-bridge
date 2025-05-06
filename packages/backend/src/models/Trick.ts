@@ -1,6 +1,6 @@
-import type { UpCard } from "@/models/Card";
+import { UpCardModel } from "@/schemas/CardSchema";
 
 export interface Trick {
   winnerIndex: number | null;
-  cards: UpCard[];
+  cards: UpCardModel[];
 }

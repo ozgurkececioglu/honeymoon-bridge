@@ -1,5 +1,4 @@
-import type { ClientView } from "@/models/ClientView";
-import type { VisibleDeck } from "@/models/VisibleDeck";
+import { ClientViewModel } from "@/schemas/ClientViewSchema";
 import { cardService } from "@/services/game-state/CardService";
 import { deckService } from "@/services/game-state/DeckService";
 import { gameStateService } from "@/services/game-state/GameStateService";
@@ -8,8 +7,8 @@ import { scoreService } from "@/services/game-state/ScoreService";
 import { trickService } from "@/services/game-state/TrickService";
 
 export class ViewService {
-  createPlayerSpecificState(playerIndex: number): ClientView {
-    const deck: VisibleDeck = {
+  createPlayerView(playerIndex: number): ClientViewModel {
+    const deck: ClientViewModel["deck"] = {
       playerCardsOnTable: [],
       opponentCardsOnTable: [],
       opponentCardsOnHand: [],
@@ -53,16 +52,13 @@ export class ViewService {
       deck,
       allowedCardsToPlay,
 
-      currentRoundScore: scoreService.getCurrentRoundScore(
-        trickService,
-        playerIndex
-      ),
+      currentRoundScore: scoreService.getCurrentRoundScore(playerIndex),
 
       isGameOver: gameStateService.isGameOver(),
       winner: null,
 
       activePlayerPlayedSuits: roundService.getPlayedSuits(playerIndex),
-      scoreboard: scoreService.getScoreboard(roundService, playerIndex),
+      scoreboard: scoreService.getScoreboard(playerIndex),
     };
   }
 }

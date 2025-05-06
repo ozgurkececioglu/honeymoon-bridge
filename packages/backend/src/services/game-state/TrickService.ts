@@ -1,10 +1,11 @@
-import type { Suit, UpCard } from "@/models/Card";
+import type { Suit } from "@/models/Card";
 import type { Trick } from "@/models/Trick";
+import { UpCardModel } from "@/schemas/CardSchema";
 import invariant from "tiny-invariant";
 
 export class TrickService {
   private tricks: Array<Trick>;
-  private currentTrick: UpCard[];
+  private currentTrick: UpCardModel[];
 
   constructor() {
     this.tricks = [];
@@ -20,7 +21,7 @@ export class TrickService {
     return this.tricks;
   }
 
-  getCurrentTrick(): UpCard[] {
+  getCurrentTrick(): UpCardModel[] {
     return this.currentTrick;
   }
 
@@ -45,14 +46,14 @@ export class TrickService {
     return this.currentTrick[0].suit;
   }
 
-  doesCardMatchSuit(card: UpCard): boolean {
+  doesCardMatchSuit(card: UpCardModel): boolean {
     // Check if the card has the same suit as the existing cards on the current trick
     const existingSuit = this.getExistingSuit();
 
     return card.suit === existingSuit;
   }
 
-  addCardToTrick(card: UpCard): void {
+  addCardToTrick(card: UpCardModel): void {
     this.currentTrick.push(card);
   }
 
@@ -72,7 +73,7 @@ export class TrickService {
     return this.tricks.length === 26;
   }
 
-  private getCardValue(card: UpCard) {
+  private getCardValue(card: UpCardModel) {
     const rankValues: Record<string, number> = {
       "2": 2,
       "3": 3,

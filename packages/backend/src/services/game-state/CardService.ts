@@ -1,14 +1,14 @@
-import type { DownCard, UpCard } from "@/models/Card";
 import type { PlayableCard } from "@/models/PlayableCard";
-import type { UpDownCards } from "@/models/UpDownCards";
-import type { VisibleDeck } from "@/models/VisibleDeck";
+import { DownCardModel, UpCardModel } from "@/schemas/CardSchema";
+import { ClientViewModel } from "@/schemas/ClientViewSchema";
+import { UpDownCardsModel } from "@/schemas/UpDownCardsSchema";
 import { deckService } from "@/services/game-state/DeckService";
 import { trickService } from "@/services/game-state/TrickService";
 import invariant from "tiny-invariant";
 
 export class CardService {
-  processPlayerCardsOnTable(playerCards: PlayableCard[]): UpDownCards[] {
-    const result = new Array<UpDownCards>(10);
+  processPlayerCardsOnTable(playerCards: PlayableCard[]): UpDownCardsModel[] {
+    const result = new Array<UpDownCardsModel>(10);
 
     for (let i = 0; i < 10; i++) {
       const upCard = playerCards[i * 2];
@@ -41,17 +41,20 @@ export class CardService {
   processPlayerCardsOnHand<T extends boolean>(
     cardsOnHand: PlayableCard[],
     hasActivePlayerWonAnyTricks: T
-  ): T extends true ? UpCard[] : DownCard[] {
+  ): T extends true ? UpCardModel[] : DownCardModel[] {
     if (hasActivePlayerWonAnyTricks) {
       return cardsOnHand.filter((card) => !card.isPlayed);
     }
 
     return cardsOnHand.map((card) => ({ id: card.id })) as T extends true
-      ? UpCard[]
-      : DownCard[];
+      ? UpCardModel[]
+      : DownCardModel[];
   }
 
-  isCardLogicallyPlayable(attemptedCard: UpCard, playerIndex: number): boolean {
+  isCardLogicallyPlayable(
+    attemptedCard: UpCardModel,
+    playerIndex: number
+  ): boolean {
     const { card: foundCard, index: foundCardIndex } = deckService.getCardById(
       attemptedCard.id
     );
@@ -76,7 +79,7 @@ export class CardService {
     return true;
   }
 
-  isCardPlayable(attemptedCard: UpCard, playerIndex: number): boolean {
+  isCardPlayable(attemptedCard: UpCardModel, playerIndex: number): boolean {
     if (!this.isCardLogicallyPlayable(attemptedCard, playerIndex)) {
       return false;
     }
@@ -105,9 +108,9 @@ export class CardService {
   }
 
   getAllowedCardsToPlay(
-    deck: VisibleDeck,
+    deck: ClientViewModel["deck"],
     isActivePlayer: boolean
-  ): UpCard[] | null {
+  ): UpCardModel[] | null {
     if (!isActivePlayer) {
       return null;
     }
@@ -118,7 +121,7 @@ export class CardService {
       return null;
     }
 
-    const allowedCardsToPlay: UpCard[] = [];
+    const allowedCardsToPlay: UpCardModel[] = [];
     const existingSuit = currentTrick[0]!.suit;
 
     deck.playerCardsOnTable.forEach((cardOnTable) => {

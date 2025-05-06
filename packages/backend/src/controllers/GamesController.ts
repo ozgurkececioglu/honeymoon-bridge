@@ -1,4 +1,3 @@
-import { logger } from "@/server";
 import { gamesService } from "@/services/GamesService";
 import type { Request, RequestHandler, Response } from "express";
 import invariant from "tiny-invariant";

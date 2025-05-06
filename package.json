@@ -2,9 +2,17 @@
   "name": "@honeymoon-bridge/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start:dev:be": "nx run backend:start:dev",
+    "start:dev:fe": "nx run frontend:start:dev",
+    "generate:swagger": "./bin/generate-swagger-api.sh"
+  },
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.2"
+  },
   "devDependencies": {
     "@nx/js": "20.8.1",
     "@swc-node/register": "~1.9.1",
@@ -12,6 +20,7 @@
     "@swc/helpers": "~0.5.11",
     "@types/node": "18.16.9",
     "nx": "20.8.1",
+    "prettier": "^2.6.2",
     "tslib": "^2.3.0",
     "typescript": "~5.7.2"
   },

@@ -1,5 +1,5 @@
-import type { UpCard } from "@/models/Card";
+import { UpCardModel } from "@/schemas/CardSchema";
 
-export interface PlayableCard extends UpCard {
+export interface PlayableCard extends UpCardModel {
   isPlayed: boolean;
 }

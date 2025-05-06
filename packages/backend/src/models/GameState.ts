@@ -1,4 +1,5 @@
-import type { Suit, UpCard } from "@/models/Card";
+import type { Suit } from "@/models/Card";
+import { UpCardModel } from "@/schemas/CardSchema";
 import { cardService } from "@/services/game-state/CardService";
 import { gameStateService } from "@/services/game-state/GameStateService";
 import { trickService } from "@/services/game-state/TrickService";
@@ -9,15 +10,15 @@ export class GameState {
     return gameStateService.isCurrentPlayersTurn(playerIndex);
   }
 
-  isCardPlayable(card: UpCard, playerIndex: number): boolean {
+  isCardPlayable(card: UpCardModel, playerIndex: number): boolean {
     return cardService.isCardPlayable(card, playerIndex);
   }
 
-  setTrump(trump: Suit) {
+  setTrump(trump: Suit | "none") {
     return gameStateService.setTrumpSuit(trump);
   }
 
-  playCard(card: UpCard, playerIndex: number) {
+  playCard(card: UpCardModel, playerIndex: number) {
     return gameStateService.playCard(card, playerIndex);
   }
 
@@ -29,7 +30,7 @@ export class GameState {
     return trickService.areTricksComplete();
   }
 
-  createPlayerSpecificState(playerIndex: number) {
-    return viewService.createPlayerSpecificState(playerIndex);
+  createPlayerView(playerIndex: number) {
+    return viewService.createPlayerView(playerIndex);
   }
 }
