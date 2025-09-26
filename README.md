@@ -1,109 +1,208 @@
-# HoneymoonBridge
+# Honeymoon Bridge 🃏
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A real-time multiplayer implementation of the classic Honeymoon Bridge card game, built with modern web technologies and powered by Nx.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## 🎮 About the Game
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+Honeymoon Bridge is a simplified two-player variant of the classic Bridge card game. This implementation features:
 
-## Generate a library
+- **Real-time multiplayer gameplay** using WebSockets
+- **Complete game mechanics** including trump suit selection, trick-taking, and scoring
+- **Interactive card table** with drag-and-drop card play
+- **Responsive design** optimized for desktop and mobile devices
+- **Game state management** with proper turn-based mechanics
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+## 🏗️ Architecture
+
+This project is built as an Nx monorepo with two main packages:
+
+### Backend (`packages/backend`)
+
+- **Express.js** server with TypeScript
+- **Socket.IO** for real-time communication
+- **OpenAPI/Swagger** documentation
+- **Zod** schemas for type-safe validation
+- **Game engine** with complete Honeymoon Bridge logic
+
+### Frontend (`packages/frontend`)
+
+- **React 19** with TypeScript
+- **TanStack Router** for client-side routing
+- **Tailwind CSS** for styling
+- **Vite** for development and building
+- **Socket.IO Client** for real-time updates
+- **Framer Motion** for card animations
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd honeymoon-bridge
+
+# Install dependencies
+npm install
 ```
 
-## Run tasks
+### Development
 
-To build the library use:
+Start both frontend and backend in development mode:
 
-```sh
-npx nx build pkg1
+```bash
+# Start backend (runs on http://localhost:3000)
+npm run start:dev:be
+
+# Start frontend (runs on http://localhost:5173)
+npm run start:dev:fe
 ```
 
-To run any task with Nx use:
+### API Documentation
 
-```sh
-npx nx <target> <project-name>
+Generate and update Swagger API documentation:
+
+```bash
+npm run generate:swagger
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+The API documentation will be available at `http://localhost:3000/api-docs` when the backend is running.
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 🎯 Game Features
 
-## Versioning and releasing
+### Core Gameplay
 
-To version and release the library use
+- **Two-player matches** with session-based authentication
+- **Card dealing** with proper shuffling and distribution
+- **Trump suit selection** by the active player
+- **Trick-taking mechanics** with suit-following rules
+- **Scoring system** based on traditional Honeymoon Bridge rules
+- **Round progression** with proper game state management
 
-```
-npx nx release
-```
+### User Interface
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+- **Interactive card table** with visual card representations
+- **Trump suit selector** with all four suits plus "no trump" option
+- **Real-time game state updates**
+- **Scoreboard** showing current and historical scores
+- **Game lobby** for creating and joining games
+- **Responsive design** for various screen sizes
 
-[Learn more about Nx release &raquo;](hhttps://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Technical Features
 
-## Keep TypeScript project references up to date
+- **Type-safe API** with OpenAPI schema generation
+- **Real-time synchronization** between players
+- **Session management** for player authentication
+- **Game state persistence** during active sessions
+- **Comprehensive error handling** and validation
 
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
+## 📁 Project Structure
 
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
-```
-
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
-
-```sh
-npx nx sync:check
-```
-
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
-
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
-```
-
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+```text
+honeymoon-bridge/
+├── packages/
+│   ├── backend/                 # Express.js API server
+│   │   ├── src/
+│   │   │   ├── controllers/     # Request handlers
+│   │   │   ├── models/          # Game entities (Card, Player, etc.)
+│   │   │   ├── services/        # Business logic
+│   │   │   ├── schemas/         # Zod validation schemas
+│   │   │   └── routers/         # API routes
+│   │   └── package.json
+│   └── frontend/                # React application
+│       ├── src/
+│       │   ├── components/      # React components
+│       │   ├── routes/          # TanStack Router pages
+│       │   ├── hooks/           # Custom React hooks
+│       │   ├── contexts/        # React contexts
+│       │   └── network/         # API client
+│       └── package.json
+├── bin/                         # Utility scripts
+└── package.json                 # Root package configuration
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 🛠️ Development Commands
 
-## Install Nx Console
+```bash
+# Build both packages
+npm run build
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+# Run linting
+npm run lint
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+# Run tests
+npm run test
 
-## Useful links
+# Type checking
+npm run typecheck
 
-Learn more:
+# Generate API types from OpenAPI schema
+npm run generate:swagger
+```
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 🧪 Testing
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+The project includes comprehensive test suites for both frontend and backend:
+
+```bash
+# Run backend tests
+npx nx test backend
+
+# Run frontend tests
+npx nx test frontend
+
+# Run all tests
+npx nx run-many -t test
+```
+
+## 🚢 Deployment
+
+### Production Build
+
+```bash
+# Build for production
+npx nx build backend
+npx nx build frontend
+```
+
+### Environment Variables
+
+Configure the following environment variables for production:
+
+```env
+```env
+# Backend
+PORT=3000
+NODE_ENV=production
+
+# Frontend
+VITE_API_URL=http://localhost:3000
+
+
+## 🎮 How to Play
+
+1. **Join a Game**: Navigate to the lobby and create or join a game
+2. **Wait for Opponent**: Games require exactly 2 players to start
+3. **Select Trump**: When it's your turn, choose a trump suit (or no trump)
+4. **Play Cards**: Click on cards in your hand to play them
+5. **Follow Suit**: You must follow the leading suit if you have cards of that suit
+6. **Win Tricks**: The highest card (considering trump) wins each trick
+7. **Score Points**: Points are awarded based on tricks won and trump selection
+8. **Complete Rounds**: Play continues until all 26 tricks are played
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+Built with ❤️ using [Nx](https://nx.dev), [React](https://react.dev), [Express](https://expressjs.com), and [Socket.IO](https://socket.io)
