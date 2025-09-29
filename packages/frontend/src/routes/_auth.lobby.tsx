@@ -70,6 +70,30 @@ function RouteComponent() {
     }
   };
 
+  const handleCreateAgainstAI = async () => {
+    try {
+      const res = await fetch('/api/games/create/bot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${sessionId}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const { data } = await res.json();
+
+      if (data.id) {
+        navigate({ to: `/game/${data.id}` });
+      }
+    } catch (error) {
+      console.error('Error during game creation against AI:', error);
+    }
+  };
+
   const handleJoinGame = async (gameId: string) => {
     try {
       const res = await fetch(`/api/games/${gameId}/join`, {
@@ -98,9 +122,13 @@ function RouteComponent() {
     <div className="flex flex-col">
       <h1 className="text-4xl pb-10">Welcome to the Game Lobby</h1>
 
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-2">
         <Button startIcon={<Plus />} onClick={handleCreateGame}>
           New
+        </Button>
+
+        <Button startIcon={<Plus />} onClick={handleCreateAgainstAI}>
+          New against AI
         </Button>
       </div>
 

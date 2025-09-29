@@ -92,6 +92,46 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/games/create/bot': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              success: boolean;
+              message: string;
+              data?: Record<string, never>;
+              statusCode: number;
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/games/{id}/join': {
     parameters: {
       query?: never;
@@ -339,7 +379,7 @@ export interface components {
       createdAt: string;
     };
     GamesJoinRequest: {
-      body: {
+      params: {
         /** Format: uuid */
         gameId: string;
       };

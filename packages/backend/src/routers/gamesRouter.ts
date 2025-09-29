@@ -27,6 +27,15 @@ gamesRouter.post('/create', validateRequest(GamesCreateRequestSchema), gamesCont
 
 gamesRegistry.registerPath({
   method: 'post',
+  path: '/api/games/create/bot',
+  tags: ['Games'],
+  responses: createApiResponse(z.object({}), 'Success'),
+});
+
+gamesRouter.post('/create/bot', gamesController.createGameAgainstBot);
+
+gamesRegistry.registerPath({
+  method: 'post',
   path: '/api/games/{id}/join',
   tags: ['Games'],
   request: { body: createApiRequestBody(GamesJoinRequestSchema) },

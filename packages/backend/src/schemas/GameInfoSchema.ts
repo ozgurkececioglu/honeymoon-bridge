@@ -1,5 +1,5 @@
-import { extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi";
-import { z } from "zod";
+import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+import { z } from 'zod';
 
 extendZodWithOpenApi(z);
 
@@ -13,9 +13,10 @@ export const GameInfoSchema = z
         username: z.string(),
       }),
     ),
+    isAgainstBot: z.boolean().optional(),
     name: z.string(), // Name of the game
-    status: z.enum(["waiting", "active", "completed"]),
+    status: z.enum(['waiting', 'active', 'completed']),
     createdBy: z.string(), // User ID of the creator
     createdAt: z.date(),
   })
-  .openapi("GameInfo");
+  .openapi('GameInfo');
