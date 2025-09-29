@@ -71,8 +71,6 @@ export function useWebSocket(url: string, sessionId: string, gameId: string | nu
     const handleGameUpdated = ({ action, view }: GameActionResponse) => {
       const { type, payload } = action;
 
-      console.log('Game state updated:', type, payload);
-
       const newState = view;
 
       if (type === 'play_card') {

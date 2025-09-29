@@ -1,3 +1,4 @@
+import { PlayerSchema } from '@/schemas/PlayerSchema';
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
@@ -7,12 +8,7 @@ export type GameInfoModel = z.infer<typeof GameInfoSchema>;
 export const GameInfoSchema = z
   .object({
     id: z.string(),
-    players: z.array(
-      z.object({
-        id: z.string(),
-        username: z.string(),
-      }),
-    ),
+    players: z.array(PlayerSchema),
     isAgainstBot: z.boolean().optional(),
     name: z.string(), // Name of the game
     status: z.enum(['waiting', 'active', 'completed']),

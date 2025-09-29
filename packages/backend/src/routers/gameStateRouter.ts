@@ -90,11 +90,11 @@ export const getSocketConnectionHandler =
       gameStateController.authenticate(socket, message),
     );
 
-    socket.on("join_room", (message) =>
+    socket.on("join_room", async (message) =>
       gameStateController.joinRoom(socket, io, message),
     );
 
-    socket.on("game_action", (message) =>
+    socket.on("game_action", async (message) =>
       gameStateController.gameAction(socket, io, message),
     );
   };

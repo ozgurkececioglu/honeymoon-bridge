@@ -3,6 +3,7 @@ import { GameActionRequestModel, GameActionRequestSchema } from '@/schemas/GameA
 import { JoinRoomSchema } from '@/schemas/JoinRoomSchema';
 import { logger } from '@/server';
 import { gamesService } from '@/services/GamesService';
+import { gameManager } from '@/services/GameManager';
 import { sessionService } from '@/services/SessionService';
 import { SocketServerType, SocketType } from '@/types';
 import invariant from 'tiny-invariant';
@@ -42,7 +43,7 @@ export class GameStateController {
     });
   }
 
-  public joinRoom(socket: SocketType, io: SocketServerType, message: { gameId?: string }) {
+  public async joinRoom(socket: SocketType, io: SocketServerType, message: { gameId?: string }) {
     // Check if socket is authenticated
     if (!socket.data.session || !socket.data.sessionId) {
       return socket.emit('error', { message: 'Authentication required' });
@@ -83,31 +84,27 @@ export class GameStateController {
       // Initialize game state, deal cards, etc.
       game.state = new GameState();
 
-      // notify first player
-      io.to(`${game.id}:${game.players[0].id}`).emit('game_started', {
-        gameId: game.id,
-        view: game.state!.createPlayerView(0),
-      });
-
-      // notify second player
-      socket.emit('game_started', {
-        gameId: game.id,
-        view: game.state!.createPlayerView(1),
-      });
-    } else if (game.isAgainstBot && game.players.length === 1 && game.status === 'waiting') {
-      game.status = 'active';
-      // Initialize game state, deal cards, etc.
-      game.state = new GameState();
+      logger.info(`Game ${game.id} starting between players: ${game.players.map((p) => p.id).join(' vs ')}`);
 
       // notify first player
       io.to(`${game.id}:${game.players[0].id}`).emit('game_started', {
         gameId: game.id,
         view: game.state!.createPlayerView(0),
       });
+
+      if (!game.isAgainstBot) {
+        // notify second player
+        socket.emit('game_started', {
+          gameId: game.id,
+          view: game.state!.createPlayerView(1),
+        });
+      } else {
+        await gameManager.handlePostGameAction(game, io);
+      }
     }
   }
 
-  public gameAction(socket: SocketType, io: SocketServerType, message: GameActionRequestModel) {
+  public async gameAction(socket: SocketType, io: SocketServerType, message: GameActionRequestModel) {
     // Check if socket is authenticated
     if (!socket.data.session) {
       return socket.emit('error', { message: 'Authentication required' });
@@ -210,12 +207,20 @@ export class GameStateController {
     }
 
     game.players.forEach((player, i) => {
-      io.to(`${game.id}:${player.id}`).emit('game_updated', {
-        gameId: game.id,
-        view: gameState.createPlayerView(i),
-        action,
-      });
+      // Don't send updates to the bot
+      if (player.id !== 'bot') {
+        io.to(`${game.id}:${player.id}`).emit('game_updated', {
+          gameId: game.id,
+          view: gameState.createPlayerView(i),
+          action,
+        });
+      }
     });
+
+    // If this is a bot game, trigger bot action after human player's action
+    if (game.isAgainstBot) {
+      await gameManager.handlePostGameAction(game, io);
+    }
   }
 }
 

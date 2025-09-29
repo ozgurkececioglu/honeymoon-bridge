@@ -88,7 +88,6 @@ export class CardService {
       return true;
     }
 
-    // Check if the card is following the lead for the current suit
     const currentPlayerCards = deckService.getPlayersCards(playerIndex);
     const existingSuit = trickService.getExistingSuit();
 
