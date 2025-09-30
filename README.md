@@ -2,6 +2,9 @@
 
 A real-time multiplayer implementation of the classic Honeymoon Bridge card game, built with modern web technologies and powered by Nx.
 
+<img width="678" height="1470" alt="Screenshot 2025-09-30 at 09 28 05" src="https://github.com/user-attachments/assets/dea07ee7-536f-445c-b09c-8598ad8dc207" />
+<img width="678" height="1470" alt="Screenshot 2025-09-30 at 09 27 57" src="https://github.com/user-attachments/assets/1cfd52a5-24ef-4743-9fc0-14ac54181c93" />
+
 ## 🎮 About the Game
 
 Honeymoon Bridge is a simplified two-player variant of the classic Bridge card game. This implementation features:
