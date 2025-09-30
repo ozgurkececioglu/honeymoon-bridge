@@ -4,6 +4,7 @@ import { useAuth } from 'hooks/useAuth';
 import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { GameInfo } from 'types/swaggerAliases';
+import { createFullApiUrl } from '../config/env';
 
 export const Route = createFileRoute('/_auth/lobby')({
   component: RouteComponent,
@@ -18,7 +19,7 @@ function RouteComponent() {
   useEffect(() => {
     const getGames = async () => {
       try {
-        const res = await fetch('/api/games', {
+        const res = await fetch(createFullApiUrl('/api/games'), {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -45,7 +46,7 @@ function RouteComponent() {
 
   const handleCreateGame = async () => {
     try {
-      const res = await fetch('/api/games/create', {
+      const res = await fetch(createFullApiUrl('/api/games/create'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +73,7 @@ function RouteComponent() {
 
   const handleCreateAgainstAI = async () => {
     try {
-      const res = await fetch('/api/games/create/bot', {
+      const res = await fetch(createFullApiUrl('/api/games/create/bot'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +97,7 @@ function RouteComponent() {
 
   const handleJoinGame = async (gameId: string) => {
     try {
-      const res = await fetch(`/api/games/${gameId}/join`, {
+      const res = await fetch(createFullApiUrl(`/api/games/${gameId}/join`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

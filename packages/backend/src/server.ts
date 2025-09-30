@@ -25,7 +25,30 @@ const io = new Server<
   { sessionId: string; session: SessionModel }
 >(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, etc.)
+      if (!origin) return callback(null, true);
+
+      // Allow any origin in development
+      if (env.isDevelopment) return callback(null, true);
+
+      // Check if origin is in allowed list
+      if (env.corsOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Check for localhost origins in development/preview
+      if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+        return callback(null, true);
+      }
+
+      // Check for Vercel preview deployments
+      if (origin.includes('.vercel.app')) {
+        return callback(null, true);
+      }
+
+      return callback(new Error('Not allowed by CORS'));
+    },
     allowedHeaders: ["my-custom-header"],
     credentials: true,
   },
@@ -37,7 +60,36 @@ app.set("trust proxy", true);
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: env.CORS_ORIGIN, credentials: true }));
+
+// Configure CORS to support multiple origins
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, etc.)
+    if (!origin) return callback(null, true);
+
+    // Allow any origin in development
+    if (env.isDevelopment) return callback(null, true);
+
+    // Check if origin is in allowed list
+    if (env.corsOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    // Check for localhost origins in development/preview
+    if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      return callback(null, true);
+    }
+
+    // Check for Vercel preview deployments
+    if (origin.includes('.vercel.app')) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
+
 app.use(helmet());
 app.use(rateLimiter);
 

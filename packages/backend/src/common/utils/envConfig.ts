@@ -10,7 +10,8 @@ const envSchema = z.object({
 
   PORT: z.coerce.number().int().positive().default(8080),
 
-  CORS_ORIGIN: z.string().url().default("http://localhost:8080"),
+  // CORS_ORIGIN can be a single URL or comma-separated list of URLs
+  CORS_ORIGIN: z.string().default("http://localhost:8080"),
 
   COMMON_RATE_LIMIT_MAX_REQUESTS: z.coerce
     .number()
@@ -33,4 +34,6 @@ export const env = {
   isDevelopment: parsedEnv.data.NODE_ENV === "development",
   isProduction: parsedEnv.data.NODE_ENV === "production",
   isTest: parsedEnv.data.NODE_ENV === "test",
+  // Parse CORS origins - can be single URL or comma-separated list
+  corsOrigins: parsedEnv.data.CORS_ORIGIN.split(",").map(origin => origin.trim()),
 };

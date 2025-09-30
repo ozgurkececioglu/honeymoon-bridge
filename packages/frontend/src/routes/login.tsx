@@ -1,6 +1,7 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { Button } from "components/button/Button";
 import { useAnonymousAuth } from "hooks/useAnonymousAuth";
+import { createFullApiUrl } from "../config/env";
 import { z } from "zod";
 
 const fallback = "/lobby";
@@ -23,7 +24,7 @@ function Login() {
 
   const handleLogin = async (testUser: number) => {
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch(createFullApiUrl("/api/auth/login"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

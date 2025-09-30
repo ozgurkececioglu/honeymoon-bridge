@@ -5,6 +5,7 @@
   "scripts": {
     "start:dev:be": "npm run start --workspace=@honeymoon-bridge/backend",
     "start:dev:fe": "npm run start --workspace=@honeymoon-bridge/frontend",
+    "start:prod:be": "npm run start:prod --workspace=@honeymoon-bridge/backend",
     "build:be": "npm run build --workspace=@honeymoon-bridge/backend",
     "build:fe": "npm run build --workspace=@honeymoon-bridge/frontend",
     "build": "npm run build:be && npm run build:fe",

@@ -2,8 +2,9 @@ import { AnimatingCardsContextType } from 'contexts/animatingCardsContext';
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { ClientView, GameActionRequest, GameActionResponse } from 'types/swaggerAliases';
+import config from '../config/env';
 
-const socket = io('http://localhost:3000', {
+const socket = io(config.socketUrl, {
   withCredentials: true,
   extraHeaders: {
     'my-custom-header': 'abcd',
