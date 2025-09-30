@@ -1,7 +1,7 @@
-# backend
+# Backend
 
-This library was generated with [Nx](https://nx.dev).
+The backend service for the Honeymoon Bridge game.
 
 ## Building
 
-Run `nx build backend` to build the library.
+Run `npm run build` to build the library.

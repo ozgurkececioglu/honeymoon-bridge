@@ -8,103 +8,134 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthLobbyRouteImport } from './routes/_auth.lobby'
+import { Route as AuthGameIndexRouteImport } from './routes/_auth.game/index'
+import { Route as AuthGameGameIdRouteImport } from './routes/_auth.game/$gameId'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as LoginImport } from './routes/login'
-import { Route as AuthImport } from './routes/_auth'
-import { Route as IndexImport } from './routes/index'
-import { Route as AuthLobbyImport } from './routes/_auth.lobby'
-import { Route as AuthGameIndexImport } from './routes/_auth.game/index'
-import { Route as AuthGameGameIdImport } from './routes/_auth.game/$gameId'
-
-// Create/Update Routes
-
-const LoginRoute = LoginImport.update({
+const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthRoute = AuthImport.update({
+const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthLobbyRoute = AuthLobbyImport.update({
+const AuthLobbyRoute = AuthLobbyRouteImport.update({
   id: '/lobby',
   path: '/lobby',
   getParentRoute: () => AuthRoute,
 } as any)
-
-const AuthGameIndexRoute = AuthGameIndexImport.update({
+const AuthGameIndexRoute = AuthGameIndexRouteImport.update({
   id: '/game/',
   path: '/game/',
   getParentRoute: () => AuthRoute,
 } as any)
-
-const AuthGameGameIdRoute = AuthGameGameIdImport.update({
+const AuthGameGameIdRoute = AuthGameGameIdRouteImport.update({
   id: '/game/$gameId',
   path: '/game/$gameId',
   getParentRoute: () => AuthRoute,
 } as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/lobby': typeof AuthLobbyRoute
+  '/game/$gameId': typeof AuthGameGameIdRoute
+  '/game': typeof AuthGameIndexRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/lobby': typeof AuthLobbyRoute
+  '/game/$gameId': typeof AuthGameGameIdRoute
+  '/game': typeof AuthGameIndexRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_auth/lobby': typeof AuthLobbyRoute
+  '/_auth/game/$gameId': typeof AuthGameGameIdRoute
+  '/_auth/game/': typeof AuthGameIndexRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/login' | '/lobby' | '/game/$gameId' | '/game'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/login' | '/lobby' | '/game/$gameId' | '/game'
+  id:
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/login'
+    | '/_auth/lobby'
+    | '/_auth/game/$gameId'
+    | '/_auth/game/'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  LoginRoute: typeof LoginRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_auth': {
       id: '/_auth'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof AuthImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
-      parentRoute: typeof rootRoute
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_auth/lobby': {
       id: '/_auth/lobby'
       path: '/lobby'
       fullPath: '/lobby'
-      preLoaderRoute: typeof AuthLobbyImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/game/$gameId': {
-      id: '/_auth/game/$gameId'
-      path: '/game/$gameId'
-      fullPath: '/game/$gameId'
-      preLoaderRoute: typeof AuthGameGameIdImport
-      parentRoute: typeof AuthImport
+      preLoaderRoute: typeof AuthLobbyRouteImport
+      parentRoute: typeof AuthRoute
     }
     '/_auth/game/': {
       id: '/_auth/game/'
       path: '/game'
       fullPath: '/game'
-      preLoaderRoute: typeof AuthGameIndexImport
-      parentRoute: typeof AuthImport
+      preLoaderRoute: typeof AuthGameIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/game/$gameId': {
+      id: '/_auth/game/$gameId'
+      path: '/game/$gameId'
+      fullPath: '/game/$gameId'
+      preLoaderRoute: typeof AuthGameGameIdRouteImport
+      parentRoute: typeof AuthRoute
     }
   }
 }
-
-// Create and export the route tree
 
 interface AuthRouteChildren {
   AuthLobbyRoute: typeof AuthLobbyRoute
@@ -120,103 +151,11 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof AuthRouteWithChildren
-  '/login': typeof LoginRoute
-  '/lobby': typeof AuthLobbyRoute
-  '/game/$gameId': typeof AuthGameGameIdRoute
-  '/game': typeof AuthGameIndexRoute
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof AuthRouteWithChildren
-  '/login': typeof LoginRoute
-  '/lobby': typeof AuthLobbyRoute
-  '/game/$gameId': typeof AuthGameGameIdRoute
-  '/game': typeof AuthGameIndexRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_auth': typeof AuthRouteWithChildren
-  '/login': typeof LoginRoute
-  '/_auth/lobby': typeof AuthLobbyRoute
-  '/_auth/game/$gameId': typeof AuthGameGameIdRoute
-  '/_auth/game/': typeof AuthGameIndexRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/lobby' | '/game/$gameId' | '/game'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/lobby' | '/game/$gameId' | '/game'
-  id:
-    | '__root__'
-    | '/'
-    | '/_auth'
-    | '/login'
-    | '/_auth/lobby'
-    | '/_auth/game/$gameId'
-    | '/_auth/game/'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRouteWithChildren
-  LoginRoute: typeof LoginRoute
-}
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   LoginRoute: LoginRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/_auth",
-        "/login"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/_auth": {
-      "filePath": "_auth.tsx",
-      "children": [
-        "/_auth/lobby",
-        "/_auth/game/$gameId",
-        "/_auth/game/"
-      ]
-    },
-    "/login": {
-      "filePath": "login.tsx"
-    },
-    "/_auth/lobby": {
-      "filePath": "_auth.lobby.tsx",
-      "parent": "/_auth"
-    },
-    "/_auth/game/$gameId": {
-      "filePath": "_auth.game/$gameId.tsx",
-      "parent": "/_auth"
-    },
-    "/_auth/game/": {
-      "filePath": "_auth.game/index.tsx",
-      "parent": "/_auth"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

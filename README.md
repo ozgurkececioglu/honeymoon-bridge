@@ -1,6 +1,6 @@
 # Honeymoon Bridge 🃏
 
-A real-time multiplayer implementation of the classic Honeymoon Bridge card game, built with modern web technologies and powered by Nx.
+A real-time multiplayer implementation of the classic Honeymoon Bridge card game, built with modern web technologies and npm workspaces.
 
 | ss1 | ss2 |
 |---|---|
@@ -18,7 +18,7 @@ Honeymoon Bridge is a simplified two-player variant of the classic Bridge card g
 
 ## 🏗️ Architecture
 
-This project is built as an Nx monorepo with two main packages:
+This project is built as a monorepo with npm workspaces and two main packages:
 
 ### Backend (`packages/backend`)
 
@@ -155,13 +155,13 @@ The project includes comprehensive test suites for both frontend and backend:
 
 ```bash
 # Run backend tests
-npx nx test backend
+npm run test --workspace=@honeymoon-bridge/backend
 
 # Run frontend tests
-npx nx test frontend
+npm run test --workspace=@honeymoon-bridge/frontend
 
 # Run all tests
-npx nx run-many -t test
+npm run test
 ```
 
 ## 🚢 Deployment
@@ -170,8 +170,11 @@ npx nx run-many -t test
 
 ```bash
 # Build for production
-npx nx build backend
-npx nx build frontend
+npm run build --workspace=@honeymoon-bridge/backend
+npm run build --workspace=@honeymoon-bridge/frontend
+
+# Or build both
+npm run build
 ```
 
 ### Environment Variables
@@ -209,4 +212,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-Built with ❤️ using [Nx](https://nx.dev), [React](https://react.dev), [Express](https://expressjs.com), and [Socket.IO](https://socket.io)
+Built with ❤️ using [React](https://react.dev), [Express](https://expressjs.com), and [Socket.IO](https://socket.io)
