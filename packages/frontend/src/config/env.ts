@@ -37,12 +37,18 @@ export const createApiUrl = (path: string): string => {
 
 // Helper function to create full API URLs (including /api prefix)
 export const createFullApiUrl = (path: string): string => {
-  // Remove leading slash and /api prefix if present
+  // Remove leading slash if present
   let cleanPath = path.startsWith('/') ? path.slice(1) : path;
+
+  // Remove /api prefix if present (since we'll add it back)
   if (cleanPath.startsWith('api/')) {
     cleanPath = cleanPath.slice(4);
   }
-  return `${config.apiBaseUrl}/api/${cleanPath}`;
+
+  // Ensure we don't have double slashes
+  const basePath = config.apiBaseUrl.endsWith('/') ? config.apiBaseUrl.slice(0, -1) : config.apiBaseUrl;
+
+  return `${basePath}/api/${cleanPath}`;
 };
 
 export default config;

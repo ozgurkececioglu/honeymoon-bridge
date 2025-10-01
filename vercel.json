@@ -1,31 +1,12 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "packages/frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "packages/frontend/dist"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/.*",
-      "dest": "/packages/frontend/dist/index.html"
-    }
-  ],
-  "buildCommand": "cd packages/frontend && npm run build",
-  "devCommand": "cd packages/frontend && npm run start",
-  "installCommand": "npm install",
+  "buildCommand": "npm install && npm run build:fe",
   "outputDirectory": "packages/frontend/dist",
+  "installCommand": "npm install",
   "framework": "vite",
-  "env": {
-    "VITE_API_BASE_URL": "@vite_api_base_url",
-    "VITE_SOCKET_URL": "@vite_socket_url",
-    "VITE_NODE_ENV": "production"
-  }
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
